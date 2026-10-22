@@ -1,0 +1,24 @@
+{
+  "name": "Jupyter",
+  "image": "quay.io/jupyter/datascience-notebook:latest",
+
+  "remoteUser": "jovyan",
+
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": { "label": "JupyterLab", "onAutoForward": "openBrowserOnce" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-toolsai.jupyter",
+        "ms-python.python"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/bin/python",
+        "notebook.lineNumbers": "on"
+      }
+    }
+  }
+}
