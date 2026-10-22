@@ -1,8 +1,21 @@
+// Entorno mínimo de Jupyter para GitHub Codespaces.
+//
+// HALLAZGO (2026-10-22): el repositorio tiene hooks de Git LFS en
+// .git/hooks/ (pre-push, post-commit) pero la imagen de Jupyter NO trae
+// el binario `git-lfs`. Cada `git push` moría con exit code != 0 en el
+// hook y Git abortaba antes de contactar al servidor:
+//   "This repository is configured for Git LFS but 'git-lfs' was not found"
+//   "error: failed to push some refs"
+// Por eso el postCreateCommand instala git-lfs y registra los filtros LFS.
 {
   "name": "Jupyter",
   "image": "quay.io/jupyter/datascience-notebook:latest",
 
   "remoteUser": "jovyan",
+
+  // Instala git-lfs dentro del entorno conda y registra los filtros LFS
+  // SOLO en este repositorio. ~30-60 s la primera vez, después queda cacheado.
+  "postCreateCommand": "if command -v mamba >/dev/null 2>&1; then mamba install -y -n base -c conda-forge git-lfs; else conda install -y -n base -c conda-forge git-lfs; fi && git lfs install --local && git lfs env | head -n 6",
 
   "forwardPorts": [8888],
   "portsAttributes": {
@@ -17,7 +30,8 @@
       ],
       "settings": {
         "python.defaultInterpreterPath": "/opt/conda/bin/python",
-        "notebook.lineNumbers": "on"
+        "notebook.lineNumbers": "on",
+        "git.autofetch": true
       }
     }
   }
