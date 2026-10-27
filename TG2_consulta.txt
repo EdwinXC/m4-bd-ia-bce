@@ -1,6 +1,6 @@
 CONSULTA DOCUMENTADA
-1. ¿De donde sale?   Direccion o ruta exacta: ___    Fecha del corte de la fuente: ___
-2. ¿Que se pidio?    Parametros (juntos, con su valor): ___
-3. ¿Que se esperaba recibir?   Filas / columnas / totales esperados: ___
-4. ¿Que se hizo?     Transformaciones, en orden, cada una con lo que hace: ___
-5. ¿Quien y cuando?  Autor: ___    Fecha: ___    Licencia de la fuente (o 'no la declara'): ___
+1. ¿De donde sale?   Direccion o ruta exacta: datos/export.csv (Serie Estadistica 3.1.1 Exportaciones FOB por Producto Principal - Banco Central del Ecuador)    Fecha del corte de la fuente: 2026-10-26 (Publicacion corte Julio 2026)
+2. ¿Que se pidio?    Parametros (juntos, con su valor): RUTA_ENTRADA="datos/export.csv", SALIDA=f"salida/bce_exportaciones_mensuales_{date.today().isoformat()}.csv", FILAS_ESPERADAS=31, COLUMNAS_MIN=15
+3. ¿Que se esperaba recibir?   Filas / columnas / totales esperados: 31 registros mensuales (Enero 2024 a Julio 2026); 26 columnas desglosadas por producto primario e industrializado; montos positivos en miles de USD.
+4. ¿Que se hizo?     Transformaciones, en orden, cada una con lo que hace: 1. extraer: lectura del archivo CSV delimitado por ';' con codificacion utf-8-sig. 2. transformar: recorte de cabeceras administrativas y notas al pie, ffill() para normalizar el anio en series mensuales, conversion de texto con separador de miles a tipo numerico, validacion estructural de 31 filas y filtro contra montos menores o iguales a cero con raise. 3. cargar: persistencia de tabla mensual limpia con fecha de ejecucion en el directorio salida/.
+5. ¿Quien y cuando?  Autor: EXC BCE - Diplomado Big Data e IA    Fecha: 2026-10-26    Licencia de la fuente (o 'no la declara'): Estadisticas Oficiales de Difusion Publica BCE (no declara licencia restrictiva)
